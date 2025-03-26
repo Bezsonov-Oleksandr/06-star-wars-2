@@ -12,17 +12,23 @@ const AboutMe = () => {
                 return res.json()
             })
             .then(data => {
-                const myStory = `Main name is ${data.name}. I am is a ${data.gender} with ${data.hair_color} hair and ${data.eye_color} eyes that always attract attention. 
-                My skin is ${data.skin_color}, giving me a mysterious and unique appearance. Weighing ${data.mass} kg and at an age corresponding to his birth year (${data.birth_year}).`;
-                setAboutMe(myStory)
+                setAboutMe({...data});
             })
-            .catch((e) => setAboutMe(e.message))
+            .catch((e) => setAboutMe({error: e.message}))
     }, []);
 
+    if (hero.error) 
+        return (
+            <div>
+                {hero}
+            </div>
+        );
+    const myStory = `Main name is ${hero.name}. I am is a ${hero.gender} with ${hero.hair_color} hair and ${hero.eye_color} eyes that always attract attention. 
+                My skin is ${hero.skin_color}, giving me a mysterious and unique appearance. Weighing ${hero.mass} kg and at an age corresponding to his birth year (${hero.birth_year}).`;
     return (
-        <div>
-            {hero}
-        </div>
+        <p className={'farGalaxy'}>
+            {myStory}
+        </p>
     );
 };
 
