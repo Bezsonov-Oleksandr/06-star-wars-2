@@ -1,7 +1,7 @@
 import NavItem from "./NavItem.jsx";
 import {navItems} from "../utils/constants.js";
 
-const Navigation = ({changePage}) => {
+const Navigation = () => {
     return (
         <nav className="fixed-top mt-2 ms-5">
             <ul className="nav">
@@ -9,7 +9,6 @@ const Navigation = ({changePage}) => {
                     <NavItem
                         itemTitle={item}
                         key={item}
-                        changePage={changePage}
                     />
                 ))}
             </ul>
