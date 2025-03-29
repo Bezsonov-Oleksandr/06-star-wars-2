@@ -8,11 +8,6 @@ const AboutMe = () => {
         const currentDate = Date.now();
         const localHeroInfo = localStorage.getItem(storageName);
         const heroInfo = JSON.parse(localHeroInfo);
-        if (!heroInfo) {
-            console.log('info = null')}
-        else {
-            console.log((currentDate-heroInfo.infoDate)/1000/60);
-        }
         if (heroInfo && currentDate - heroInfo.infoDate < 30 * 24 * 60 * 60 * 1000 ) {
             setHero(heroInfo.info)
         } else {

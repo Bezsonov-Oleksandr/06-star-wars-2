@@ -4,16 +4,25 @@ import {base_url} from "../utils/constants.js";
 
 const Contact = () => {
     const [planets, setPlanets] = useState(['Loading...'])
+    const storageName = 'info_planets';
 
-    async function fetchPlanets() {
+    async function fetchPlanets(currentDate) {
         const response = await fetch(`${base_url}/v1/planets`);
         const data = await response.json();
         const planets = data.map(item => item.name);
         setPlanets(planets);
+        localStorage.setItem(storageName, JSON.stringify({planets,infoDate: currentDate}));
     }
 
     useEffect(() => {
-        fetchPlanets();
+        const currentDate = Date.now();
+        const localPlanetsInfo = localStorage.getItem(storageName);
+        const planetsInfo = JSON.parse(localPlanetsInfo);
+        if (planetsInfo && currentDate - planetsInfo.infoDate < 30 * 24 * 60 * 60 * 1000) {
+            setPlanets(planetsInfo.planets)
+        } else {
+            fetchPlanets(currentDate);
+        }
     }, [])
 
     return (
