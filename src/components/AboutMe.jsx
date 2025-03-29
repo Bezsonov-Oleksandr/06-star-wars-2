@@ -3,22 +3,37 @@ import {useEffect, useState} from "react";
 
 const AboutMe = () => {
     const [hero, setHero] = useState();
+    const storageName = 'info_about_me';
     useEffect(() => {
-        fetch(`${base_url}/v1/peoples/1`)
-            .then(response => response.json())
-            .then(data => {
-                const info = {
-                    name: data.name,
-                    gender: data.gender,
-                    birth_year: data.birth_year,
-                    height: data.height,
-                    mass: data.mass,
-                    hair_color: data.hair_color,
-                    skin_color: data.skin_color,
-                    eye_color: data.eye_color
-                }
-                setHero(info);
-            })
+        const currentDate = Date.now();
+        const localHeroInfo = localStorage.getItem(storageName);
+        const heroInfo = JSON.parse(localHeroInfo);
+        if (!heroInfo) {
+            console.log('info = null')}
+        else {
+            console.log((currentDate-heroInfo.infoDate)/1000/60);
+        }
+        if (heroInfo && currentDate - heroInfo.infoDate < 30 * 24 * 60 * 60 * 1000 ) {
+            setHero(heroInfo.info)
+        } else {
+            fetch(`${base_url}/v1/peoples/1`)
+                .then(response => response.json())
+                .then(data => {
+                    const info = {
+                        name: data.name,
+                        gender: data.gender,
+                        birth_year: data.birth_year,
+                        height: data.height,
+                        mass: data.mass,
+                        hair_color: data.hair_color,
+                        skin_color: data.skin_color,
+                        eye_color: data.eye_color
+                    }
+                    setHero(info);
+                    localStorage.setItem(storageName, JSON.stringify({info,infoDate: currentDate}));
+                })
+                .catch((e) => setHero(e.message));
+        }
     }, [])
 
     return (
@@ -40,39 +55,3 @@ const AboutMe = () => {
 };
 
 export default AboutMe;
-
-// import React, {useEffect} from 'react';
-// import {base_url} from "../utils/constants.js";
-//
-// const AboutMe = () => {
-//     const [hero, setAboutMe] = React.useState('One moment, please ...');
-//     useEffect(() => {
-//         fetch(`${base_url}/v1/peoples/1`)
-//             .then(res => {
-//                 if (!res.ok) {
-//                     throw new Error('Failed to fetch peoples');
-//                 }
-//                 return res.json()
-//             })
-//             .then(data => {
-//                 setAboutMe({...data});
-//             })
-//             .catch((e) => setAboutMe({error: e.message}))
-//     }, []);
-//
-//     if (hero.error)
-//         return (
-//             <div>
-//                 {hero}
-//             </div>
-//         );
-//     const myStory = `Main name is ${hero.name}. I am is a ${hero.gender} with ${hero.hair_color} hair and ${hero.eye_color} eyes that always attract attention.
-//                 My skin is ${hero.skin_color}, giving me a mysterious and unique appearance. Weighing ${hero.mass} kg and at an age corresponding to his birth year (${hero.birth_year}).`;
-//     return (
-//         <p className={'farGalaxy'}>
-//             {myStory}
-//         </p>
-//     );
-// };
-//
-// export default AboutMe;
