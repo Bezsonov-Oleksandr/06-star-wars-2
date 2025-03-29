@@ -7,9 +7,12 @@ import friend6 from "../assets/friend6.jpg";
 import friend7 from "../assets/friend7.jpg";
 import friend8 from "../assets/friend8.jpg";
 import friend9 from "../assets/friend9.jpg";
+import {createContext} from "react";
 
 export const friends = [friend1, friend2, friend3, friend4, friend5, friend6, friend7, friend8, friend9];
 export const navItems = ['Home', 'About me', 'Star Wars', 'Contact'];
 export const starWarsInfo = 'Star Wars is an American epic space opera media franchise created by George Lucas, which began with the eponymous 1977 film[a] and quickly became a worldwide pop culture phenomenon. The franchise has been expanded into various films and other media, including television series, video games, novels, comic books, theme park attractions, and themed areas, comprising an all-encompassing fictional universe.[b] Star Wars is one of the highest-grossing media franchises of all time.';
 
 export const base_url = 'https://sw-info-api.herokuapp.com';
+
+export const StarWarsContext = createContext();
